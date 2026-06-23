@@ -26,12 +26,12 @@ useEffect(() => {
 
       const profileRes =
         await axios.get(
-          "http://localhost:5000/api/users/1"
+          "https://interviewaceai-rpmo.onrender.com/api/users/1"
         );
 
       const summaryRes =
         await axios.get(
-          "http://localhost:5000/api/dashboard/summary/1"
+          "https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/1"
         );
 
       setProfile(profileRes.data);
@@ -57,7 +57,7 @@ useEffect(() => {
     try {
 
       await axios.put(
-        "http://localhost:5000/api/users/1",
+        "https://interviewaceai-rpmo.onrender.com/api/users/1",
         profile
       );
 

@@ -22,7 +22,7 @@ function MockInterview() {
   const startInterview = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/interview/start",
+        "https://interviewaceai-rpmo.onrender.com/api/interview/start",
         {
           userId: 1,
           interviewType,
@@ -47,7 +47,7 @@ function MockInterview() {
   const submitAnswer = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/interview/answer",
+        "https://interviewaceai-rpmo.onrender.com/api/interview/answer",
         {
           questionId,
           answer,
@@ -65,7 +65,7 @@ function MockInterview() {
   const nextQuestion = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/interview/next-question",
+        "https://interviewaceai-rpmo.onrender.com/api/interview/next-question",
         {
           sessionId,
         }

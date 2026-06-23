@@ -12,7 +12,7 @@ function ResumeAnalyzer() {
 
   const fetchResumes=async()=>{
   try{
-    const res=await axios.get("http://localhost:5000/api/resume/list");
+    const res=await axios.get("https://interviewaceai-rpmo.onrender.com/api/resume/list");
     setResumes(res.data);
   }catch(error){
     console.log(error);
@@ -34,7 +34,7 @@ function ResumeAnalyzer() {
       "resume",selectedFile
     );
     try{
-      const res=await axios.post("http://localhost:5000/api/resume/upload",formData);
+      const res=await axios.post("https://interviewaceai-rpmo.onrender.com/api/resume/upload",formData);
 
       console.log(res.data);
      await fetchResumes();
@@ -48,7 +48,7 @@ function ResumeAnalyzer() {
   };
 const deleteResume=async(id)=>{
   try{
-    await axios.delete(`http://localhost:5000/api/resume/${id}`);
+    await axios.delete(`https://interviewaceai-rpmo.onrender.com/api/resume/${id}`);
     fetchResumes();
 
   }catch(error){

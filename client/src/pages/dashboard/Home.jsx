@@ -19,7 +19,7 @@ useEffect(() => {
 
       const res =
         await axios.get(
-          "http://localhost:5000/api/dashboard/summary/1"
+          "https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/1"
         );
 
       setSummary(res.data);

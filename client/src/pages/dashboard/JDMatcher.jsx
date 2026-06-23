@@ -16,7 +16,7 @@ function JDMatcher() {
     const fetchResumes = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/resume/list"
+        "https://interviewaceai-rpmo.onrender.com/api/resume/list"
       );
 
       setResumes(res.data);
@@ -34,14 +34,14 @@ function JDMatcher() {
  
   useEffect(() => {
      const fetchHistory = async () => {
-    const res = await axios.get("http://localhost:5000/api/jd/history");
+    const res = await axios.get("https://interviewaceai-rpmo.onrender.com/api/jd/history");
     setHistory(res.data);
   }
     fetchHistory();
   }, []);
   const handleMatch = async () => {
     const res = await axios.post(
-      "http://localhost:5000/api/jd/match", {
+      "https://interviewaceai-rpmo.onrender.com/api/jd/match", {
       resumeId: selectedResume,
       jobDescription: jd,
     }

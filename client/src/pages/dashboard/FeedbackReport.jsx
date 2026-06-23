@@ -10,7 +10,7 @@ function FeedbackReport() {
         const loadReport = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/interview/report/1"
+                    "https://interviewaceai-rpmo.onrender.com/api/interview/report/1"
                 );
                 setReport(res.data);
             } catch (error) {

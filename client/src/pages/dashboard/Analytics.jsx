@@ -20,7 +20,7 @@ function Analytics() {
         const loadAnalytics = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/analytics/1"
+                    "https://interviewaceai-rpmo.onrender.com/api/analytics/1"
                 );
                 setData(res.data);
             } catch (error) {
