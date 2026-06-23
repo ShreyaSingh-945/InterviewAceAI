@@ -57,7 +57,7 @@ function Login(){
 
         <button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:brightness-110 text-white py-3 rounded-xl font-bold shadow-md shadow-indigo-100 transition active:scale-98 text-sm mt-3"
+          className="w-full bg-linear-to-r from-indigo-600 to-violet-600 hover:brightness-110 text-white py-3 rounded-xl font-bold shadow-md shadow-indigo-100 transition active:scale-98 text-sm mt-3"
         >
           Sign In
         </button>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PageHeader from "../../components/shared/PageHeader";
-import SectionCard from "../../components/shared/SectionCard";
+import "../../components/shared/SectionCard";
 
 function FeedbackReport() {
     const [report, setReport] = useState(null);
@@ -35,7 +35,7 @@ function FeedbackReport() {
             />
 
             {/* Score summary panel */}
-            <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-2">
+            <div className="bg-linear-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-2">
                 <div>
                     <h2 className="text-xl font-extrabold tracking-tight">Session Review Details</h2>
                     <p className="text-indigo-100 text-xs mt-1 leading-relaxed">Detailed breakdown of answers, correct metrics, and constructive feedback pointers.</p>
