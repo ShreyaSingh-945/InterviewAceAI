@@ -20,11 +20,11 @@ function FileDropzone({ onFileSelect }) {
       </div>
       <h3 className="text-sm font-bold text-slate-700 group-hover:text-indigo-650 transition duration-150">Drag & Drop Resume Here</h3>
 
-      <p className="text-xxs text-slate-450 mb-5">PDF or DOCX files only (Max 5MB)</p>
+      <p className="text-xxs text-slate-450 mb-5">PDF files only (Max 5MB)</p>
 
       <input
         type="file"
-        accept=".pdf,.doc,.docx"
+        accept=".pdf"
         onChange={handleFileChange}
         className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-indigo-50 hover:file:text-indigo-700 transition cursor-pointer"
       />

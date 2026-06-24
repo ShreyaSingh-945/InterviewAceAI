@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import PageHeader from "../../components/shared/PageHeader";
 import SectionCard from "../../components/shared/SectionCard";
 import FileDropzone from "../../components/ui/FileDropzone";
@@ -15,7 +15,7 @@ function ResumeAnalyzer() {
 
   const fetchResumes=async()=>{
   try{
-    const res=await axios.get(`https://interviewaceai-rpmo.onrender.com/api/resume/list/${userId}`);
+    const res=await api.get(`/api/resume/list/${userId}`);
     setResumes(res.data);
   }catch(error){
     console.log(error);
@@ -38,7 +38,7 @@ function ResumeAnalyzer() {
     );
     formData.append("userId", userId);
     try{
-      const res=await axios.post("https://interviewaceai-rpmo.onrender.com/api/resume/upload",formData);
+      const res=await api.post("/api/resume/upload",formData);
 
       console.log(res.data);
      await fetchResumes();
@@ -52,7 +52,7 @@ function ResumeAnalyzer() {
   };
 const deleteResume=async(id)=>{
   try{
-    await axios.delete(`https://interviewaceai-rpmo.onrender.com/api/resume/${id}`);
+    await api.delete(`/api/resume/${id}`);
     fetchResumes();
 
   }catch(error){
@@ -68,7 +68,7 @@ const deleteResume=async(id)=>{
 
       <SectionCard
         title="Upload Resume"
-        description="Upload a PDF or DOCX file"
+        description="Upload a PDF file"
       >
         <div className="flex flex-col items-start w-full">
           <FileDropzone onFileSelect={setSelectedFile} />
