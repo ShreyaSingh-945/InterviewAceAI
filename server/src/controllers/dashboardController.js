@@ -46,7 +46,9 @@ const userName =
     `
     SELECT COUNT(*) as total
     FROM resumes
-    `
+    WHERE user_id = $1
+    `,
+    [userId]
   );
 
     const totalInterviews =

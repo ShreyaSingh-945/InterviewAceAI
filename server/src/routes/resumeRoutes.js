@@ -19,7 +19,7 @@ router.post(
 
 // Get All Resumes
 router.get(
-  "/list",
+  "/list/:userId",
   getResumes
 );
 

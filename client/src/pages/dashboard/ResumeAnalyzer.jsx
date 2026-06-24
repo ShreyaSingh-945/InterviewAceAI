@@ -10,9 +10,12 @@ function ResumeAnalyzer() {
   const [selectedFile,setSelectedFile]=useState(null);
   const [resumes,setResumes]=useState([]);
 
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userId = user.id || 1;
+
   const fetchResumes=async()=>{
   try{
-    const res=await axios.get("https://interviewaceai-rpmo.onrender.com/api/resume/list");
+    const res=await axios.get(`https://interviewaceai-rpmo.onrender.com/api/resume/list/${userId}`);
     setResumes(res.data);
   }catch(error){
     console.log(error);
@@ -22,7 +25,7 @@ function ResumeAnalyzer() {
   useEffect(() => {
     
   fetchResumes();
-}, []);
+}, [userId]);
   const uploadResume=async()=>{
     if(!selectedFile){
       alert("Please select a file");
@@ -33,6 +36,7 @@ function ResumeAnalyzer() {
     formData.append(
       "resume",selectedFile
     );
+    formData.append("userId", userId);
     try{
       const res=await axios.post("https://interviewaceai-rpmo.onrender.com/api/resume/upload",formData);
 

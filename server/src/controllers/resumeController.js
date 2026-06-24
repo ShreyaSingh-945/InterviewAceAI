@@ -4,6 +4,7 @@ const {analyzeResume,}=require("../services/resumeAnalysisService");
 
 exports.uploadResume=async(req,res)=>{
  try{
+    const { userId } = req.body;
     const text=await extractTextFromPDF(req.file.path);
     console.log(text);
     const analysis=analyzeResume(text);
@@ -12,11 +13,12 @@ exports.uploadResume=async(req,res)=>{
         `INSERT INTO resumes(filename,resume_text,score,
     strengths,
     weaknesses,
-    suggestions) VALUES($1,$2,$3,$4,$5,$6)`,
+    suggestions, user_id) VALUES($1,$2,$3,$4,$5,$6,$7)`,
         [req.file.originalname,text,analysis.score,
     analysis.strengths.join(", "),
     analysis.weaknesses.join(", "),
-    analysis.suggestions.join(", "),]
+    analysis.suggestions.join(", "),
+    userId]
     );
     console.log("Inserted into db");
     res.json({
@@ -32,8 +34,10 @@ exports.uploadResume=async(req,res)=>{
 }
 exports.getResumes=async(req,res)=>{
     try{
+        const { userId } = req.params;
         const result=await pool.query(
-            `SELECT * FROM resumes ORDER BY id DESC`
+            `SELECT * FROM resumes WHERE user_id=$1 ORDER BY id DESC`,
+            [userId]
         );
         res.json(result.rows);
     }
