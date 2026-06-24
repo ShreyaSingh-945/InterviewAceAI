@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "resumes",
-    resource_type: "raw", // Required for PDF/document uploads
+    resource_type: "raw", // Required to support PDF and Word doc uploads on Cloudinary
     allowed_formats: ["pdf", "docx"],
   },
   filename: (req, file, cb) => {
