@@ -17,6 +17,36 @@ app.get("/",(req,res)=>{
 app.get("/api/test",(req,res)=>{
   res .json({message:"InterviewAce AI API Working"});
 });
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const isUrlDefined = !!process.env.DATABASE_URL;
+    const urlLength = process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0;
+    const maskedUrl = process.env.DATABASE_URL 
+      ? process.env.DATABASE_URL.replace(/:[^:@]+@/, ":****@") // Mask password
+      : "undefined";
+
+    const result = await pool.query("SELECT NOW()");
+    res.json({
+      success: true,
+      message: "Database connection successful",
+      isUrlDefined,
+      urlLength,
+      maskedUrl,
+      time: result.rows[0].now
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+      errorName: error.name,
+      errorMessage: error.message,
+      errorStack: error.stack,
+      errorCode: error.code,
+      isUrlDefined: !!process.env.DATABASE_URL,
+      urlLength: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0
+    });
+  }
+});
 app.get("/api/users",async(req,res)=>{
   try{
     const result=await pool.query(
