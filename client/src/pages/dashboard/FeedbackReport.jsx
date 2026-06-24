@@ -5,25 +5,49 @@ import "../../components/shared/SectionCard";
 
 function FeedbackReport() {
     const [report, setReport] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     
     useEffect(() => {
         const loadReport = async () => {
             try {
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const userId = user.id || 1;
+
                 const res = await axios.get(
-                    "https://interviewaceai-rpmo.onrender.com/api/interview/report/1"
+                    `https://interviewaceai-rpmo.onrender.com/api/interview/report/${userId}`
                 );
                 setReport(res.data);
+                setLoading(false);
             } catch (error) {
-                console.log(error);
+                console.error(error);
+                setError("Failed to load feedback report.");
+                setLoading(false);
             }
         };
         loadReport();
     }, []);
-
-    if (!report) return (
+ 
+    if (loading) return (
         <div className="flex flex-col items-center justify-center p-12 w-full text-center">
             <span className="text-3xl animate-pulse">⏳</span>
-            <h2 className="text-lg font-bold text-slate-700 mt-4">Loading Report...</h2>
+            <h2 className="text-lg font-bold text-slate-750 mt-4">Loading Report...</h2>
+            <p className="text-sm text-slate-400 mt-1 max-w-md">
+                If this is the first load in a while, it may take up to a minute for the Render backend server to wake up.
+            </p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="flex flex-col items-center justify-center p-12 w-full text-center">
+            <span className="text-3xl">⚠️</span>
+            <h2 className="text-lg font-bold text-red-650 mt-4">{error}</h2>
+            <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow hover:brightness-110 active:scale-98 transition cursor-pointer"
+            >
+                Retry Connection
+            </button>
         </div>
     );
 

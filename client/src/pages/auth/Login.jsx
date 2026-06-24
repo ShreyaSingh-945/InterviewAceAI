@@ -18,6 +18,7 @@ function Login(){
      console.log(res.data);
 
      localStorage.setItem("token",res.data.token);
+     localStorage.setItem("user", JSON.stringify(res.data.user));
      console.log(localStorage.getItem("token"));
      alert("Login successful");
      navigate("/dashboard");

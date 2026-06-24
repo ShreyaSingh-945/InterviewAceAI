@@ -8,33 +8,58 @@ import SessionCard from "../../components/shared/SessionCard";
 import QuickActionCard from "../../components/shared/QuickActionCard";
 
 function Home(){
-  const [summary, setSummary] =
-useState(null);
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-useEffect(() => {
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const userId = user.id || 1;
 
-  const loadDashboard = async () => {
-
-    try {
-
-      const res =
-        await axios.get(
-          "https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/1"
+        const res = await axios.get(
+          `https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/${userId}`
         );
 
-      setSummary(res.data);
+        setSummary(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to load dashboard data. Please try again.");
+        setLoading(false);
+      }
+    };
 
-    } catch (error) {
-      console.log(error);
-    }
+    loadDashboard();
+  }, []);
 
-  };
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 w-full text-center">
+        <span className="text-3xl animate-pulse">⏳</span>
+        <h2 className="text-lg font-bold text-slate-700 mt-4">Loading Dashboard...</h2>
+        <p className="text-sm text-slate-400 mt-1 max-w-md">
+          If this is the first load in a while, it may take up to a minute for the Render backend server to wake up.
+        </p>
+      </div>
+    );
+  }
 
-  loadDashboard();
-
-}, []);
-if (!summary)
-  return <h2>Loading...</h2>;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 w-full text-center">
+        <span className="text-3xl">⚠️</span>
+        <h2 className="text-lg font-bold text-red-650 mt-4">{error}</h2>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow hover:brightness-110 active:scale-98 transition cursor-pointer"
+        >
+          Retry Connection
+        </button>
+      </div>
+    );
+  }
 
 const getRelativeDate = (date) => {
   const now = new Date();

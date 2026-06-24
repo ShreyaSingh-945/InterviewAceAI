@@ -6,7 +6,6 @@ import SectionCard from "../../components/shared/SectionCard";
 import StatCard from "../../components/shared/StatCard";
 
 function Settings() {
-
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -14,65 +13,53 @@ function Settings() {
     branch: "",
     graduation_year: ""
   });
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [summary, setSummary] =
-    useState(null);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userId = user.id || 1;
 
-useEffect(() => {
-
-  const fetchData = async () => {
-
-    try {
-
-      const profileRes =
-        await axios.get(
-          "https://interviewaceai-rpmo.onrender.com/api/users/1"
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const profileRes = await axios.get(
+          `https://interviewaceai-rpmo.onrender.com/api/users/${userId}`
         );
 
-      const summaryRes =
-        await axios.get(
-          "https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/1"
+        const summaryRes = await axios.get(
+          `https://interviewaceai-rpmo.onrender.com/api/dashboard/summary/${userId}`
         );
 
-      setProfile(profileRes.data);
-      setSummary(summaryRes.data);
+        setProfile(profileRes.data);
+        setSummary(summaryRes.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to load settings data.");
+        setLoading(false);
+      }
+    };
 
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  };
-
-  fetchData();
-
-}, []);
-
-  
-
+    fetchData();
+  }, [userId]);
 
   const saveProfile = async () => {
-
     try {
-
-      await axios.put(
-        "https://interviewaceai-rpmo.onrender.com/api/users/1",
+      const res = await axios.put(
+        `https://interviewaceai-rpmo.onrender.com/api/users/${userId}`,
         profile
       );
 
-      alert(
-        "Profile Updated Successfully"
-      );
+      // Update localStorage with updated user data
+      const updatedUser = { ...user, name: profile.name };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
 
+      alert("Profile Updated Successfully");
     } catch (error) {
-
-      console.log(error);
-
+      console.error(error);
       alert("Update Failed");
-
     }
-
   };
 
   const logout = () => {
@@ -83,6 +70,33 @@ useEffect(() => {
       "/login";
 
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 w-full text-center">
+        <span className="text-3xl animate-pulse">⏳</span>
+        <h2 className="text-lg font-bold text-slate-700 mt-4">Loading Settings...</h2>
+        <p className="text-sm text-slate-400 mt-1 max-w-md">
+          If this is the first load in a while, it may take up to a minute for the Render backend server to wake up.
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 w-full text-center">
+        <span className="text-3xl">⚠️</span>
+        <h2 className="text-lg font-bold text-red-650 mt-4">{error}</h2>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow hover:brightness-110 active:scale-98 transition cursor-pointer"
+        >
+          Retry Connection
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full gap-6">

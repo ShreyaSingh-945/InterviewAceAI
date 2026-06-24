@@ -21,10 +21,13 @@ function MockInterview() {
 
   const startInterview = async () => {
     try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const userId = user.id || 1;
+
       const res = await axios.post(
         "https://interviewaceai-rpmo.onrender.com/api/interview/start",
         {
-          userId: 1,
+          userId,
           interviewType,
           difficulty,
         }
