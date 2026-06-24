@@ -7,6 +7,18 @@ const router=express.Router();
 router.post("/register",async(req,res)=>{
   try{
     const {name,email,password}=req.body;
+
+    // Check if user already exists
+    const existingUser = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({
+        message: "Email already registered"
+      });
+    }
+
     const hashedPassword=await bcrypt.hash(password,10);
 
     const result=await pool.query(
