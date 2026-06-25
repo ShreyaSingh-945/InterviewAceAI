@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import SectionCard from "../../components/shared/SectionCard";
 import PageHeader from "../../components/shared/PageHeader";
 function JDMatcher() {
@@ -10,43 +10,52 @@ function JDMatcher() {
   const [selectedResume, setSelectedResume] = useState("");
   const [history, setHistory] = useState([]);
  
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userId = user.id || 1;
 
-  
   useEffect(() => {
     const fetchResumes = async () => {
-    try {
-      const res = await axios.get(
-        "https://interviewaceai-rpmo.onrender.com/api/resume/list"
-      );
+      try {
+        const res = await api.get(`/api/resume/list/${userId}`);
 
-      setResumes(res.data);
+        setResumes(res.data);
 
-      if (res.data.length > 0) {
-        setSelectedResume(res.data[0].id);
+        if (res.data.length > 0) {
+          setSelectedResume(res.data[0].id);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
     fetchResumes();
-  }, []);
+  }, [userId]);
 
  
   useEffect(() => {
-     const fetchHistory = async () => {
-    const res = await axios.get("https://interviewaceai-rpmo.onrender.com/api/jd/history");
-    setHistory(res.data);
-  }
+    const fetchHistory = async () => {
+      try {
+        const res = await api.get("/api/jd/history");
+        setHistory(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     fetchHistory();
   }, []);
+
   const handleMatch = async () => {
-    const res = await axios.post(
-      "https://interviewaceai-rpmo.onrender.com/api/jd/match", {
-      resumeId: selectedResume,
-      jobDescription: jd,
+    try {
+      const res = await api.post("/api/jd/match", {
+        resumeId: selectedResume,
+        jobDescription: jd,
+      });
+      setResult(res.data);
+      
+      const historyRes = await api.get("/api/jd/history");
+      setHistory(historyRes.data);
+    } catch (error) {
+      console.log(error);
     }
-    );
-    setResult(res.data);
   };
 
   return (
